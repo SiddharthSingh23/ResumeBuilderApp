@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, TextInput, Button } from 'react-native';
-import { createUser } from './src/services/api';
+import { createUser, getUsers } from './src/services/api';
 
 const Stack = createStackNavigator();
 
@@ -36,8 +36,24 @@ const StepThree = ({ formData, setFormData }) => (
       onChangeText={(text) => setFormData({ ...formData, address: text })}
     />
     <Button title="Submit" onPress={async () => {
-      await createUser(formData);
-      alert('User created');
+      await createUser(formData)
+      .then(response => {
+        console.log(response.data); // Log the response data
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error); // Log any errors
+      });
+      alert('User Created');
+    }} />
+     <Button title="Get" onPress={async () => {
+      await getUsers()
+      .then(response => {
+        console.log(response.data); // Log the response data
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error); // Log any errors
+      });
+      alert('User Fetched');
     }} />
   </View>
 );

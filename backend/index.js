@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/resumeBuilder', {
 
 // Routes
 const usersRoute = require('./routes/users');
-app.use('/users', usersRoute);
+app.use(usersRoute);
 
 // Start the server
 const port = process.env.PORT || 5000;

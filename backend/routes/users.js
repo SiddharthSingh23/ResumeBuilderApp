@@ -3,7 +3,8 @@ const router = express.Router();
 const User = require('../models/User');
 
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/create-user', async (req, res) => {
+    console.log("⚙️  | req.body :", req.body);
     const user = new User(req.body);
     try {
         const savedUser = await user.save();
@@ -14,9 +15,10 @@ router.post('/', async (req, res) => {
 });
 
 // Get all users
-router.get('/', async (req, res) => {
+router.get('/users', async (req, res) => {
     try {
         const users = await User.find();
+        console.log("⚙️  | users :", users);
         res.json(users);
     } catch (err) {
         res.json({ message: err });

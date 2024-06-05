@@ -4,4 +4,4 @@ nodemon index.js
 
 ## Run Android / IOS
 cd frontend
-npx react-native run-android // or run-ios
+npx react-native start
