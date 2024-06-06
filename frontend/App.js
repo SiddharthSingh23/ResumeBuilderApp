@@ -1,88 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text, TextInput, Button } from 'react-native';
-import { createUser, getUsers } from './src/services/api';
+import { Provider as PaperProvider } from 'react-native-paper';
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 
 const Stack = createStackNavigator();
 
-const StepOne = ({ navigation, formData, setFormData }) => (
-  <View>
-    <Text>Name:</Text>
-    <TextInput
-      value={formData.name}
-      onChangeText={(text) => setFormData({ ...formData, name: text })}
-    />
-    <Button title="Next" onPress={() => navigation.navigate('StepTwo')} />
-  </View>
-);
-
-const StepTwo = ({ navigation, formData, setFormData }) => (
-  <View>
-    <Text>Phone:</Text>
-    <TextInput
-      value={formData.phone}
-      onChangeText={(text) => setFormData({ ...formData, phone: text })}
-    />
-    <Button title="Next" onPress={() => navigation.navigate('StepThree')} />
-  </View>
-);
-
-const StepThree = ({ formData, setFormData }) => (
-  <View>
-    <Text>Address:</Text>
-    <TextInput
-      value={formData.address}
-      onChangeText={(text) => setFormData({ ...formData, address: text })}
-    />
-    <Button title="Submit" onPress={async () => {
-      await createUser(formData)
-      .then(response => {
-        console.log(response.data); // Log the response data
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error); // Log any errors
-      });
-      alert('User Created');
-    }} />
-     <Button title="Get" onPress={async () => {
-      await getUsers()
-      .then(response => {
-        console.log(response.data); // Log the response data
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error); // Log any errors
-      });
-      alert('User Fetched');
-    }} />
-  </View>
-);
-
 const App = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    experience: '',
-    projects: '',
-    education: '',
-    skills: ''
-  });
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="StepOne">
-        <Stack.Screen name="StepOne">
-          {(props) => <StepOne {...props} formData={formData} setFormData={setFormData} />}
-        </Stack.Screen>
-        <Stack.Screen name="StepTwo">
-          {(props) => <StepTwo {...props} formData={formData} setFormData={setFormData} />}
-        </Stack.Screen>
-        <Stack.Screen name="StepThree">
-          {(props) => <StepThree {...props} formData={formData} setFormData={setFormData} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
