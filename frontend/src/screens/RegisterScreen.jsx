@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Image, ScrollView, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import {TextInput, Button, useTheme, Text} from 'react-native-paper';
+import { createUser } from '../services/api';
 import styles from './authStyles';
 
 const RegisterScreen = ({ navigation }) => {
@@ -21,8 +22,13 @@ const RegisterScreen = ({ navigation }) => {
   }
 
   // Handle register logic here
-  const handleRegister = () => {
-    console.log("⚙️  | formValues :", formValues);
+  const handleRegister = async () => {
+    try {
+      await createUser(formValues);
+      alert('User Created !');
+    } catch (error) {
+      alert('Failed to Create User !');
+    }
   };
 
   return (

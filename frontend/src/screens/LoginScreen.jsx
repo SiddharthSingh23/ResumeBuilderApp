@@ -8,25 +8,31 @@ import {
 } from 'react-native';
 import {TextInput, Button, useTheme, Text} from 'react-native-paper';
 import styles from './authStyles';
+import { loginUser } from '../services/api';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({navigation}) => {
   const theme = useTheme();
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
-  })
+  });
 
   const handleRegisterNavigation = () => {
     navigation.navigate('Register');
   };
 
   const handleChange = (name, newVal) => {
-    setFormValues((prev) => ({ ...prev, [name]: newVal }))
-  }
+    setFormValues(prev => ({...prev, [name]: newVal}));
+  };
 
   // Handle login logic here
-  const handleLogin = () => {
-    console.log("⚙️  | formValues :", formValues);
+  const handleLogin = async () => {
+    try {
+        await loginUser(formValues)
+        alert('User Logged In !');
+    } catch (error) {
+        alert('Failed to Login User !');   
+    }
   };
 
   return (
@@ -50,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
               placeholder="Email"
               label="Email"
               value={formValues.email}
-              onChangeText={(newVal) => handleChange('email', newVal)}
+              onChangeText={newVal => handleChange('email', newVal)}
               style={styles.input}
               outlineStyle={styles.outlineInput}
             />
@@ -59,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
               placeholder="Password"
               label="Password"
               value={formValues.password}
-              onChangeText={(newVal) => handleChange('password', newVal)}
+              onChangeText={newVal => handleChange('password', newVal)}
               secureTextEntry
               style={styles.input}
               outlineStyle={styles.outlineInput}
