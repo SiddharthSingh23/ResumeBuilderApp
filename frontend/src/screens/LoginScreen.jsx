@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {TextInput, Button, useTheme, Text} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './authStyles';
-import { loginUser } from '../services/api';
+import {loginUser} from '../services/api';
 
 const LoginScreen = ({navigation}) => {
   const theme = useTheme();
@@ -28,10 +29,14 @@ const LoginScreen = ({navigation}) => {
   // Handle login logic here
   const handleLogin = async () => {
     try {
-        await loginUser(formValues)
-        alert('User Logged In !');
+      const response = await loginUser(formValues);
+      alert(response?.message);
+      if (response.status === 'SUCCESS') {
+        await AsyncStorage.setItem('userToken', response?.data);
+        navigation.replace('Dashboard');
+      }
     } catch (error) {
-        alert('Failed to Login User !');   
+      alert('Failed to Login User !');
     }
   };
 

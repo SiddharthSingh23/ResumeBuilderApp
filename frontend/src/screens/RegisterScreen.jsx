@@ -1,33 +1,42 @@
 import React, {useState} from 'react';
-import {View, Image, ScrollView, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import {TextInput, Button, useTheme, Text} from 'react-native-paper';
-import { createUser } from '../services/api';
+import {createUser} from '../services/api';
 import styles from './authStyles';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({navigation}) => {
   const theme = useTheme();
   const [formValues, setFormValues] = useState({
     fullName: '',
     email: '',
     password: '',
     confirmPassword: '',
-  })
+  });
 
   const handleLoginNavigation = () => {
     navigation.navigate('Login');
   };
 
   const handleChange = (name, newVal) => {
-    setFormValues((prev) => ({ ...prev, [name]: newVal }))
-  }
+    setFormValues(prev => ({...prev, [name]: newVal}));
+  };
 
   // Handle register logic here
   const handleRegister = async () => {
     try {
-      await createUser(formValues);
-      alert('User Created !');
+      const res = await createUser(formValues);
+      console.log("⚙️  | res :", res);
+      alert('User Created!');
+      navigation.navigate('Login');
     } catch (error) {
-      alert('Failed to Create User !');
+      console.log("⚙️  | error :", error);
+      alert('Failed to Create User!');
     }
   };
 
@@ -52,7 +61,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Name"
               label="Name"
               value={formValues.fullName}
-              onChangeText={(newVal) => handleChange('fullName', newVal)}
+              onChangeText={newVal => handleChange('fullName', newVal)}
               style={styles.input}
               outlineStyle={styles.outlineInput}
             />
@@ -61,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Email"
               label="Email"
               value={formValues.email}
-              onChangeText={(newVal) => handleChange('email', newVal)}
+              onChangeText={newVal => handleChange('email', newVal)}
               style={styles.input}
               outlineStyle={styles.outlineInput}
             />
@@ -70,7 +79,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Password"
               label="Password"
               value={formValues.password}
-              onChangeText={(newVal) => handleChange('password', newVal)}
+              onChangeText={newVal => handleChange('password', newVal)}
               secureTextEntry
               style={styles.input}
               outlineStyle={styles.outlineInput}
@@ -80,7 +89,7 @@ const RegisterScreen = ({ navigation }) => {
               placeholder="Confirm Password"
               label="Confirm Password"
               value={formValues.confirmPassword}
-              onChangeText={(newVal) => handleChange('confirmPassword', newVal)}
+              onChangeText={newVal => handleChange('confirmPassword', newVal)}
               secureTextEntry
               style={styles.input}
               outlineStyle={styles.outlineInput}
@@ -94,9 +103,7 @@ const RegisterScreen = ({ navigation }) => {
               Register
             </Button>
             <TouchableOpacity onPress={handleLoginNavigation}>
-              <Text style={styles.registerText}>
-                Have an account? Login
-              </Text>
+              <Text style={styles.registerText}>Have an account? Login</Text>
             </TouchableOpacity>
           </View>
         </View>

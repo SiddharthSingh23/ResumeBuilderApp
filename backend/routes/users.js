@@ -1,6 +1,9 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const User = require('../models/User');
+
+const secretKey = process.env.SECRET_KEY;
 
 // Get all users
 router.get('/users', async (req, res) => {
@@ -36,7 +39,15 @@ router.post('/login-user', async (req, res) => {
             res.status(404).json({ message: "Email or password does not match" });
             return;
         }
-        res.json(user);
+
+        const userData = {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+        }
+
+        const token = jwt.sign(userData, secretKey, { expiresIn: '30d' });
+        res.json({ status: 'SUCCESS', data: token, message: 'Login Successful' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
