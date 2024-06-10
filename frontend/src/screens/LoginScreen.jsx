@@ -33,7 +33,7 @@ const LoginScreen = ({navigation}) => {
       alert(response?.message);
       if (response.status === 'SUCCESS') {
         await AsyncStorage.setItem('userToken', response?.data);
-        navigation.replace('Dashboard');
+        navigation.replace('App');
       }
     } catch (error) {
       alert('Failed to Login User !');

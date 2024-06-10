@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
-import DashboardScreen from '../screens/DashboardScreen';
+import AppLayout from '../layout/AppLayout';
 
 const Stack = createStackNavigator();
 
@@ -27,8 +27,8 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="App" component={AppLayout} />
         <Stack.Screen name="Login" component={isLoggedIn ? LoginScreen : null} />
         <Stack.Screen name="Register" component={isLoggedIn ? RegisterScreen : null} />
       </Stack.Navigator>
