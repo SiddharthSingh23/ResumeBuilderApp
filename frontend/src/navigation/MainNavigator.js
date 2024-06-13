@@ -10,27 +10,20 @@ const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const token = AsyncStorage.getItem('userToken');
 
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      setIsLoggedIn(!!token);
-      setLoading(false);
-    };
-    checkLoginStatus();
-  }, []);
-
-  if (loading) {
-    return null; // You can return a splash screen here
-  }
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, [token]);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="App" component={AppLayout} />
-        <Stack.Screen name="Login" component={isLoggedIn ? LoginScreen : null} />
-        <Stack.Screen name="Register" component={isLoggedIn ? RegisterScreen : null} />
+        <Stack.Screen name="App" component={isLoggedIn ? AppLayout : () => null} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

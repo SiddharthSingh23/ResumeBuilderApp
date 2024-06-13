@@ -30,10 +30,11 @@ const LoginScreen = ({navigation}) => {
   const handleLogin = async () => {
     try {
       const response = await loginUser(formValues);
-      alert(response?.message);
-      if (response.status === 'SUCCESS') {
+      if (response?.status === 'SUCCESS') {
         await AsyncStorage.setItem('userToken', response?.data);
         navigation.replace('App');
+      } else {
+        alert(response?.message);
       }
     } catch (error) {
       alert('Failed to Login User !');
