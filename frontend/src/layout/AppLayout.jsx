@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {BottomNavigation, useTheme} from 'react-native-paper';
+import {View} from 'react-native';
+import {BottomNavigation} from 'react-native-paper';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from './appLayoutStyles';
 
 const AppLayout = () => {
-  const theme = useTheme();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    {key: 'home', title: 'Home', icon: 'home'},
-    {key: 'profile', title: 'Profile', icon: 'account'},
+    {key: 'home', icon: 'home'},
+    {key: 'profile', icon: 'account'},
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
@@ -18,25 +18,26 @@ const AppLayout = () => {
     profile: ProfileScreen,
   });
 
+  const renderIcon = ({route, focused, color}) => {
+    const iconColor = focused ? 'black' : 'white';
+    return <Icon style name={route.icon} size={24} color={iconColor} />;
+  };
+
   return (
     <View style={styles.container}>
       <BottomNavigation
+        activeIndicatorStyle={styles.activeIndicatorStyle}
         navigationState={{index, routes}}
         onIndexChange={setIndex}
         renderScene={renderScene}
-        barStyle={{backgroundColor: theme.colors.primary}}
-        renderIcon={({route, focused, color}) => (
-          <Icon name={route.icon} size={24} color={color} />
-        )}
+        renderIcon={renderIcon}
+        barStyle={styles.bottomNavigation}
+        activeColor="white"
+        inactiveColor="white"
+        labeled={false}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default AppLayout;
